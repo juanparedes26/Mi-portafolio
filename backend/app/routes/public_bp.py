@@ -8,7 +8,7 @@ def home():
 
 @public_bp.route('/demo')
 def demo():
-    return jsonify({'msg':'Este es un mensaje que viene desde el backend, especificamente la Demo Page... :)'}), 200
+    return jsonify({'msg':'jeje)'}), 200
 
 @public_bp.route('/about')
 def about():
