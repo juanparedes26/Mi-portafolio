@@ -17,20 +17,19 @@ def show_hello_world():
 @admin_bp.route('/users', methods=['POST'])
 def create_user():
     try:
-        email = request.json.get('email')
+        username = request.json.get('username')
         password = request.json.get('password')
-        name = request.json.get('name')
 
-        if not email or not password or not name:
-            return jsonify({'error': 'Email, password and Name are required.'}), 400
+        if not username or not password:
+            return jsonify({'error': 'Username and password are required.'}), 400
 
-        existing_user = User.query.filter_by(email=email).first()
+        existing_user = User.query.filter_by(username=username).first()
         if existing_user:
-            return jsonify({'error': 'Email already exists.'}), 409
+            return jsonify({'error': 'Username already exists.'}), 409
 
         password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
 
-        new_user = User(email=email, password=password_hash, name=name)
+        new_user = User(username=username, password=password_hash)
 
 
         db.session.add(new_user)
@@ -38,8 +37,7 @@ def create_user():
 
         good_to_share_user = {
             'id': new_user.id,
-            'name':new_user.name,
-            'email':new_user.email
+            'username': new_user.username
         }
 
         return jsonify({'message': 'User created successfully.','user_created':good_to_share_user}), 201
@@ -53,19 +51,19 @@ def create_user():
 def get_token():
     try:
 
-        email = request.json.get('email')
+        username = request.json.get('username')
         password = request.json.get('password')
 
-        if not email or not password:
-            return jsonify({'error': 'Email and password are required.'}), 400
-        
-        login_user = User.query.filter_by(email=request.json['email']).one()
+        if not username or not password:
+            return jsonify({'error': 'Username and password are required.'}), 400
+
+        login_user = User.query.filter_by(username=username).one()
 
         password_from_db = login_user.password
         true_o_false = bcrypt.check_password_hash(password_from_db, password)
         
         if true_o_false:
-            expires = timedelta(minutes=30)
+            expires = timedelta(minutes=60)
 
             user_id = login_user.id
             access_token = create_access_token(identity=str(user_id), expires_delta=expires)
@@ -75,7 +73,7 @@ def get_token():
             return {"Error":"Contraseña  incorrecta"}
     
     except Exception as e:
-        return {"Error":"El email proporcionado no corresponde a ninguno registrado: " + str(e)}, 500
+        return {"Error":"El username proporcionado no corresponde a ninguno registrado: " + str(e)}, 500
     
     
 @admin_bp.route('/users')
@@ -88,7 +86,7 @@ def show_users():
         for user in users:
             user_dict = {
                 'id': user.id,
-                'email': user.email
+                'username': user.username
             }
             user_list.append(user_dict)
         return jsonify(user_list), 200
