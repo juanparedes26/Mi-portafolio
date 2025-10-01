@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from app import db, bcrypt
-from app.models import User
+from app.models import User ,Project
 from datetime import timedelta
 
 
@@ -92,3 +92,62 @@ def show_users():
         return jsonify(user_list), 200
     else:
         return {"Error": "Token inválido o no proporcionado"}, 401
+        
+    # RUTA CREAR PROYECTO
+@admin_bp.route('/projects', methods=['POST'])
+@jwt_required()
+def create_project():
+    try:
+        current_user_id = get_jwt_identity()
+        if not current_user_id:
+            return jsonify({'error': 'Token inválido o no proporcionado'}), 401
+
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'Request body must be JSON.'}), 400
+        title = data.get('title')
+        description = data.get('description')
+        techs = data.get('techs')
+        repo_url = data.get('repo_url')
+        live_url = data.get('live_url')
+        image_url = data.get('image_url')
+        images = data.get('images')
+
+        MAX_TECHS = 10
+        MAX_IMAGES = 10
+
+        if not isinstance(techs, list) or len(techs) > MAX_TECHS:
+            return jsonify({'error': f'Máximo {MAX_TECHS} tecnologías permitidas.'}), 400
+
+        if images and (not isinstance(images, list) or len(images) > MAX_IMAGES):
+            return jsonify({'error': f'Máximo {MAX_IMAGES} imágenes permitidas.'}), 400
+
+        if len(title) > 100:
+            return jsonify({'error': 'El título no puede superar 100 caracteres.'}), 400
+
+        if len(description) > 2000:
+            return jsonify({'error': 'La descripción no puede superar 2000 caracteres.'}), 400
+
+
+
+        if not title or not description or not techs :
+            return jsonify({'error': 'Title, description, techs, and repo_url are required.'}), 400
+
+        new_project = Project(
+            title=title,
+            description=description,
+            techs=",".join(techs) if isinstance(techs, list) else techs,
+            repo_url=repo_url,
+            live_url=live_url,
+            image_url=image_url,
+            images=",".join(images) if isinstance(images, list) else images
+        )
+
+        db.session.add(new_project)
+        db.session.commit()
+
+        return jsonify({'message': 'Project created successfully.', 'project': new_project.serialize()}), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'Error in project creation: ' + str(e)}), 500
