@@ -151,3 +151,103 @@ def create_project():
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': 'Error in project creation: ' + str(e)}), 500
+
+# RUTA OBTENER TODOS LOS PROYECTOS
+@admin_bp.route('/projects', methods=['GET'])
+def get_projects():
+    try:
+        projects = Project.query.all()
+        projects_list = [project.serialize() for project in projects]
+        return jsonify(projects_list), 200
+    except Exception as e:
+        return jsonify({'error': 'Error fetching projects: ' + str(e)}), 500
+# RUTA OBTENER PROYECTO POR ID
+@admin_bp.route('/projects/<int:project_id>', methods=['GET'])
+def get_project(project_id):
+    try:
+        project = Project.query.get(project_id)
+        if not project:
+            return jsonify({'error': 'Project not found.'}), 404
+        return jsonify(project.serialize()), 200
+    except Exception as e:
+        return jsonify({'error': 'Error fetching project: ' + str(e)}), 500
+    
+# RUTA ACTUALIZAR PROYECTO POR ID
+@admin_bp.route('/projects/<int:project_id>', methods=['PUT'])
+@jwt_required()
+def update_project(project_id):
+    try:
+        current_user_id = get_jwt_identity()
+        if not current_user_id:
+            return jsonify({'error': 'Token inválido o no proporcionado'}), 401
+
+        project = Project.query.get(project_id)
+        if not project:
+            return jsonify({'error': 'Project not found.'}), 404
+
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'Request body must be JSON.'}), 400
+
+        title = data.get('title', project.title)
+        description = data.get('description', project.description)
+        techs = data.get('techs', project.techs.split(",") if project.techs else [])
+        repo_url = data.get('repo_url', project.repo_url)
+        live_url = data.get('live_url', project.live_url)
+        image_url = data.get('image_url', project.image_url)
+        images = data.get('images', project.images.split(",") if project.images else [])
+
+        MAX_TECHS = 10
+        MAX_IMAGES = 10
+
+        if not isinstance(techs, list) or len(techs) > MAX_TECHS:
+            return jsonify({'error': f'Máximo {MAX_TECHS} tecnologías permitidas.'}), 400
+
+        if images and (not isinstance(images, list) or len(images) > MAX_IMAGES):
+            return jsonify({'error': f'Máximo {MAX_IMAGES} imágenes permitidas.'}), 400
+
+        if len(title) > 100:
+            return jsonify({'error': 'El título no puede superar 100 caracteres.'}), 400
+
+        if len(description) > 2000:
+            return jsonify({'error': 'La descripción no puede superar 2000 caracteres.'}), 400
+
+        project.title = title
+        project.description = description
+        project.techs = ",".join(techs) if isinstance(techs, list) else techs
+        project.repo_url = repo_url
+        project.live_url = live_url
+        project.image_url = image_url
+        project.images = ",".join(images) if isinstance(images, list) else images
+
+        db.session.commit()
+
+        return jsonify({'message': 'Project updated successfully.', 'project': project.serialize()}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'Error updating project: ' + str(e)}), 500
+
+# RUTA ELIMINAR PROYECTO POR ID
+@admin_bp.route('/projects/<int:project_id>', methods=['DELETE'])
+@jwt_required()
+def delete_project(project_id):
+    try:
+        current_user_id = get_jwt_identity()
+        if not current_user_id:
+            return jsonify({'error': 'Token inválido o no proporcionado'}), 401
+
+        project = Project.query.get(project_id)
+        if not project:
+            return jsonify({'error': 'Project not found.'}), 404
+
+        db.session.delete(project)
+        db.session.commit()
+
+        return jsonify({'message': 'Project deleted successfully.'}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'Error deleting project: ' + str(e)}), 500
+    
+
