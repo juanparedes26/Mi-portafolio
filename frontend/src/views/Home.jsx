@@ -9,10 +9,11 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-900 text-white">
+    <div className="fixed inset-0 bg-gray-900 text-white overflow-hidden">
       {/* Navigation */}
  <nav className="absolute top-0 left-0 right-0 text-white z-50 w-full py-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 w-full">
+        
+        <div className="flex items-center justify-between px-8 py-3">
           
       <div className="flex space-x-8 items-center">
         <a className="text-white hover:!text-blue-600 underline-offset-4 font-semibold transition-colors duration-300 hover:underline" href="#about">{t('navbar.about')}</a>
@@ -30,9 +31,9 @@ function Home() {
       </nav>
 
 
-      <main className="flex-1 flex flex-col relative w-full">
+      <main className="absolute inset-0">
         
-        <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0">
           <img
             src="/deskdark.jpg"
             alt="Dark workspace background"
@@ -43,9 +44,9 @@ function Home() {
         </div>
         
         {/* Contenido del Hero */}
-        <div className="flex-1 flex items-center justify-start relative z-10">
-          <div className="max-w-7xl mx-auto flex flex-col items-start text-left px-4 w-full">
-            {/* Nombre principal con estilo bold y grande */}
+        <div className="absolute inset-0 flex items-center justify-start z-10">
+         <div className="flex flex-col items-start text-left px-8 w-full">
+          
             <div className="mb-6">
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight leading-none text-white">
                 JUAN MANUEL
@@ -61,7 +62,7 @@ function Home() {
             </h2>
             
             {/* Descripción opcional más pequeña */}
-            <p className="text-base md:text-lg mb-8 text-gray-400 max-w-2xl leading-relaxed">
+            <p className="text-base md:text-lg mb-8 text-gray-300 max-w-2xl leading-relaxed">
               {t('hero.description')}
             </p>
             
@@ -73,8 +74,8 @@ function Home() {
 
     
          {/* Footer */}
-        <div className="relative z-10 text-white py-6 w-full">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-start gap-4 px-4 w-full">
+        <div className="absolute bottom-0 left-0 right-0 z-10 text-white py-6">
+<div className="flex flex-col md:flex-row items-start justify-start gap-4 px-8">
             <div className="flex gap-4">
               <a href="https://github.com/juanparedes26" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <svg className="w-6 h-6 text-white hover:text-blue-400 transition drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
