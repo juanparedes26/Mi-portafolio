@@ -3,6 +3,14 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from app import db, bcrypt
 from app.models import User ,Project
 from datetime import timedelta
+import os
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), '..', 'static', 'uploads')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'JPG'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 admin_bp = Blueprint('admin', __name__)
@@ -249,5 +257,34 @@ def delete_project(project_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': 'Error deleting project: ' + str(e)}), 500
+# RUTA SUBIR IMAGEN
+@admin_bp.route('/upload', methods=['POST'])
+@jwt_required()
+def upload_file():
+    try:
+        current_user_id = get_jwt_identity()
+        if not current_user_id:
+            return jsonify({'error': 'Token inválido o no proporcionado'}), 401
+
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file part in the request.'}), 400
+
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No selected file.'}), 400
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(file_path)
+            file_url = f'/static/uploads/{filename}'
+            return jsonify({'message': 'File uploaded successfully.', 'file_url': file_url}), 201
+        else:
+            return jsonify({'error': 'File type not allowed.'}), 400
+
+    except Exception as e:
+        return jsonify({'error': 'Error uploading file: ' + str(e)}), 500
+
+
     
 
