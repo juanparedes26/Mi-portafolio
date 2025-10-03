@@ -1,0 +1,17 @@
+{
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "cv": "Resume"
+  },
+  "hero": {
+    "title": "Hi, I'm Juan Manuel",
+    "subtitle": "Full Stack Developer",
+    "description": "Welcome to my portfolio. Here you can find my projects and download my resume.",
+    "download_cv": "Download CV"
+  },
+  "footer": {
+    "copyright": "Made with ❤️ by Juan Manuel. All rights reserved."
+  }
+}

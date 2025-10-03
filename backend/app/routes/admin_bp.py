@@ -284,7 +284,3 @@ def upload_file():
 
     except Exception as e:
         return jsonify({'error': 'Error uploading file: ' + str(e)}), 500
-
-
-    
-
