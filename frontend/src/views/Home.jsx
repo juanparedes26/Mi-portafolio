@@ -1,8 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
   const toggleLanguage = () => {
     i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es');
@@ -15,12 +17,11 @@ function Home() {
         
         <div className="flex items-center justify-between px-8 py-3">
           
-      <div className="flex space-x-8 items-center">
-        <a className="text-white hover:!text-blue-600 underline-offset-4 font-semibold transition-colors duration-300 hover:underline" href="#about">{t('navbar.about')}</a>
-        <a className="text-white hover:!text-blue-600 underline-offset-4 font-semibold transition-colors duration-300 hover:underline" href="#projects">{t('navbar.projects')}</a>
-        <a className="text-white hover:!text-blue-600 underline-offset-4 font-semibold transition-colors duration-300 hover:underline" href="#cv">{t('navbar.cv')}</a>
-      </div>
-        
+  <div className="flex space-x-8 items-center">
+    <button className="bg-transparent border-none text-white hover:!text-blue-600 font-semibold transition-colors duration-300 cursor-pointer" onClick={() => navigate('/about')}>{t('navbar.about')}</button>
+    <button className="bg-transparent border-none text-white hover:!text-blue-600 font-semibold transition-colors duration-300 cursor-pointer" onClick={() => navigate('/projects')}>{t('navbar.projects')}</button>
+    <button className="bg-transparent border-none text-white hover:!text-blue-600 font-semibold transition-colors duration-300 cursor-pointer" onClick={() => navigate('/cv')}>{t('navbar.cv')}</button>
+</div>
           <button
             onClick={toggleLanguage}
             className="ml-4 px-2 py-1 bg-transparent text-blue-600 rounded text-sm font-semibold hover:bg-blue-100 transition"
@@ -56,12 +57,12 @@ function Home() {
               </h1>
             </div>
             
-            {/* Profesión con estilo más sutil */}
+         
             <h2 className="text-xl md:text-2xl lg:text-3xl font-light uppercase tracking-widest text-gray-300 mb-8">
               {t('hero.subtitle')}
             </h2>
             
-            {/* Descripción opcional más pequeña */}
+    
             <p className="text-base md:text-lg mb-8 text-gray-300 max-w-2xl leading-relaxed">
               {t('hero.description')}
             </p>
