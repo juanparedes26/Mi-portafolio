@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+
 
 function Home() {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
+
 
   const toggleLanguage = () => {
     i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es');
@@ -13,24 +13,9 @@ function Home() {
   return (
     <div className="fixed inset-0 bg-gray-900 text-white overflow-hidden">
       {/* Navigation */}
- <nav className="absolute top-0 left-0 right-0 text-white z-50 w-full py-6">
-        
-        <div className="flex items-center justify-between px-8 py-3">
-          
-  <div className="flex space-x-8 items-center">
-    <button className="bg-transparent border-none text-white hover:!text-blue-600 font-semibold transition-colors duration-300 cursor-pointer" onClick={() => navigate('/about')}>{t('navbar.about')}</button>
-    <button className="bg-transparent border-none text-white hover:!text-blue-600 font-semibold transition-colors duration-300 cursor-pointer" onClick={() => navigate('/projects')}>{t('navbar.projects')}</button>
-    <button className="bg-transparent border-none text-white hover:!text-blue-600 font-semibold transition-colors duration-300 cursor-pointer" onClick={() => navigate('/cv')}>{t('navbar.cv')}</button>
-</div>
-          <button
-            onClick={toggleLanguage}
-            className="ml-4 px-2 py-1 bg-transparent text-blue-600 rounded text-sm font-semibold hover:bg-blue-100 transition"
-          >
-            {i18n.language === 'es' ? 'EN' : 'ES'}
-          </button>
-        </div>
-      </nav>
-
+      
+ 
+ 
 
       <main className="absolute inset-0">
         

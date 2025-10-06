@@ -5,12 +5,14 @@ import injectContext from './js/store/appContext.jsx';
 import './index.css';
 import NotFound from './views/NotFound.jsx';
 import About from './views/About.jsx';
+import Navbar from './components/Navbar.jsx';
 
 const Layout = () => {
     const basename = import.meta.env.VITE_BASENAME || "";
   return (
     <div>
         <BrowserRouter basename={basename}>
+            <Navbar />
             <Routes>
                 <Route exact path='/' element={<Home/>} />
                 <Route path='*' element={<NotFound/>} />
