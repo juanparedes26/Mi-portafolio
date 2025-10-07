@@ -6,6 +6,7 @@ import './index.css';
 import NotFound from './views/NotFound.jsx';
 import About from './views/About.jsx';
 import Navbar from './components/Navbar.jsx';
+import Login from './views/Login.jsx';
 
 const Layout = () => {
     const basename = import.meta.env.VITE_BASENAME || "";
@@ -17,6 +18,7 @@ const Layout = () => {
                 <Route exact path='/' element={<Home/>} />
                 <Route path='*' element={<NotFound/>} />
                 <Route exact path='/about' element={<About/>} />
+                <Route exact path='/admin-login' element={<Login/>} />
             </Routes>
         </BrowserRouter>
     </div>
