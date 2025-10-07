@@ -52,16 +52,23 @@ function Home() {
               {t('hero.description')}
             </p>
             
-            <div className="flex justify-start gap-4">
-              <a href="#cv" className="px-6 py-3 bg-transparent border-2 border-white text-white rounded-lg font-semibold text-lg shadow hover:bg-white hover:text-black hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out transform">{t('hero.download_cv')}</a>
+             <div className="flex justify-start gap-4">
+              <a
+                href={i18n.language === 'en' ? '/CV_Juan_Manuel_Paredes_EN.pdf' : '/CV_Juan_Manuel_Paredes_ES.pdf'}
+                download={i18n.language === 'en' ? 'CV_Juan_Manuel_Paredes_EN.pdf' : 'CV_Juan_Manuel_Paredes_ES.pdf'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 bg-transparent border-2 border-white text-white rounded-lg font-semibold text-lg shadow hover:bg-white hover:text-black hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out transform"
+              >
+                {t('hero.download_cv')}
+              </a>
             </div>
           </div>
         </div>
 
-    
-         {/* Footer */}
+        {/* Footer */}
         <div className="absolute bottom-0 left-0 right-0 z-10 text-white py-6">
-<div className="flex flex-col md:flex-row items-start justify-start gap-4 px-8">
+          <div className="flex flex-col md:flex-row items-start justify-start gap-4 px-8">
             <div className="flex gap-4">
               <a href="https://github.com/juanparedes26" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <svg className="w-6 h-6 text-white hover:text-blue-400 transition drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
