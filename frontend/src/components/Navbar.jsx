@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { Context } from '../js/store/appContext';
+
 
 export default function Navbar() {
+  const { store, actions } = useContext(Context);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +28,7 @@ export default function Navbar() {
      <nav className="fixed top-0 left-0 right-0 text-white z-[9999] w-full py-4 bg-black/20 backdrop-blur-sm">
       <div className="flex items-center justify-between px-8">
         
-        {/* Desktop Menu */}
+
         <div className="hidden md:flex space-x-8 items-center">
           <button
             className="bg-transparent border-none hover:!text-blue-600 text-white font-semibold transition-colors duration-200 cursor-pointer"
@@ -49,30 +53,69 @@ export default function Navbar() {
 
           <button
             className="bg-transparent border-none text-white hover:!text-blue-600 font-semibold transition-colors duration-200 cursor-pointer"
-            onClick={() => navigate('/cv')}
+            onClick={() => navigate('/skills')}
           >
-            {t('navbar.cv')}
+            {t('navbar.skills')}
           </button>
+
+  
+          {store.adminToken && (
+            <button
+              className="bg-transparent border-none text-white hover:!text-blue-600 font-semibold transition-colors duration-200 cursor-pointer"
+              onClick={() => navigate('/admin')}
+            >
+              Admin
+            </button>
+          )}
         </div>
 
-        {/* Language Toggle - Always visible */}
-        <div className="hidden md:block">
+
+        <div className="hidden md:flex items-center gap-3">
           <button
             onClick={toggleLanguage}
             className="px-3 py-1 bg-transparent text-blue-600 rounded text-sm font-semibold hover:bg-blue-100 transition"
           >
             {i18n.language === 'es' ? 'EN' : 'ES'}
           </button>
+
+         
+          {store.adminToken && (
+            <button
+              onClick={() => {
+                actions.logout();
+                navigate('/');
+              }}
+              className="px-2 py-1 bg-transparent text-red-400 rounded text-xs font-medium hover:bg-red-400 hover:text-white transition-all duration-200"
+              title="Cerrar sesión"
+            >
+              Salir
+            </button>
+          )}
         </div>
 
-        {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center justify-between w-full">
-          <button
-            onClick={toggleLanguage}
-            className="px-3 py-1 bg-transparent text-blue-600 rounded text-sm font-semibold hover:bg-blue-100 transition"
-          >
-            {i18n.language === 'es' ? 'EN' : 'ES'}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleLanguage}
+              className="px-3 py-1 bg-transparent text-blue-600 rounded text-sm font-semibold hover:bg-blue-100 transition"
+            >
+              {i18n.language === 'es' ? 'EN' : 'ES'}
+            </button>
+
+            {/* Logout móvil */}
+            {store.adminToken && (
+              <button
+                onClick={() => {
+                  actions.logout();
+                  navigate('/');
+                }}
+                className="px-2 py-1 bg-transparent text-red-400 rounded text-xs font-medium hover:bg-red-400 hover:text-white transition-all duration-200"
+                title="Cerrar sesión"
+              >
+                Salir
+              </button>
+            )}
+          </div>
           
           <button
             onClick={toggleMenu}
@@ -118,8 +161,16 @@ export default function Navbar() {
               className="text-left bg-transparent border-none text-white hover:!text-blue-600 font-semibold transition-colors duration-200 cursor-pointer"
               onClick={() => handleNavigate('/cv')}
             >
-              {t('navbar.cv')}
+              {t('navbar.skills')}
             </button>
+            {store.adminToken && (
+              <button
+                className="text-left bg-transparent border-none text-white hover:!text-blue-600 font-semibold transition-colors duration-200 cursor-pointer"
+                onClick={() => handleNavigate('/admin')}
+              >
+                Admin
+              </button>
+            )}
           </div>
         </div>
       )}

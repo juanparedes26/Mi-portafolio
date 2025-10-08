@@ -43,6 +43,7 @@ function About() {
                 </div>
               </div>
             </div>
+            
 
          
             <div className="relative h-full min-h-[60vh] lg:min-h-screen flex items-center justify-center">
