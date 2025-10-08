@@ -1,6 +1,6 @@
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-const getState = ({ getStore, getActions, setStore }) => {
+const getState = ({ getStore, setStore }) => {
 	return {
 		store: {
 			adminToken: localStorage.getItem('adminToken') || null,

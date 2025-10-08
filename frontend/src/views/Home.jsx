@@ -5,11 +5,6 @@ import { useTranslation } from 'react-i18next';
 function Home() {
   const { t, i18n } = useTranslation();
 
-
-  const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es');
-  };
-
   return (
     <div className="fixed inset-0 bg-gray-900 text-white overflow-hidden">
   
