@@ -79,7 +79,7 @@ const getState = ({ getStore, setStore }) => {
                     
                     const data = await resp.json();
                     
-                    // Actualizar store solo si todo salió bien
+                 
                     const currentProjects = store.projects || [];
                     setStore({ ...store, projects: [...currentProjects, data.project] });
                     
@@ -112,6 +112,31 @@ const getState = ({ getStore, setStore }) => {
                         console.error("getProjects error:", error);
                         return { ok: false, error: error.message };
                     }
+           },
+           getProjectById: async (projectId) => {
+                if (!projectId) {
+                    return { ok: false, error: 'ID del proyecto requerido' };
+                }
+                
+                try {
+                    const resp = await fetch(`${backendUrl}/admin/projects/${projectId}`, {
+                        method: "GET",
+                        headers: {"Content-Type": "application/json"}
+                    });
+                    
+                    if (!resp.ok) {
+                        const err = await resp.json().catch(() => ({}));
+                        return { ok: false, error: err.error || `Error HTTP ${resp.status}` };
+                    }
+                    
+                    const data = await resp.json();
+                    
+                    return { ok: true, data: data.project };
+                    
+                } catch (error) {
+                    console.error("getProjectById error:", error);
+                    return { ok: false, error: error.message };
+                }
            },
            updateProject: async (projectId, projectData) => {
                 const store = getStore();
