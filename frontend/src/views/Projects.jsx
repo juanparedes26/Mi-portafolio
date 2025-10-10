@@ -8,6 +8,8 @@ const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
+
   useEffect(() => {
     let isMounted = true;
     
@@ -62,21 +64,23 @@ const Projects = () => {
             </div>
           ) : (
             /* Grid de proyectos */
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" style={{ perspective: '1200px' }}>
               {projects.map((project, idx) => (
                 <div 
                   key={project.id}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-2xl hover:shadow-blue-600/20 transition-all duration-500 hover:scale-105 hover:-translate-y-2"
-                  style={{ animationDelay: `${idx * 100}ms` }}
+                  className="group card-3d card-animate relative bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800"
+                  style={{ 
+                    animationDelay: `${idx * 100}ms`
+                  }}
                 >
                   {/* Imagen del proyecto */}
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={project.image_url || '/deskdark.jpg'}
                       alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-colors duration-500"></div>
                     
                     {/* Badge de fecha */}
                     <div className="absolute top-4 right-4">
@@ -87,14 +91,14 @@ const Projects = () => {
                   </div>
 
                   {/* Contenido */}
-                  <div className="p-6">
+                  <div className="p-6 card-content">
                     {/* Título */}
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors duration-300">
                       {project.title}
                     </h3>
 
                     {/* Descripción */}
-                    <p className="text-gray-600 leading-relaxed mb-4 text-sm line-clamp-3">
+                    <p className="text-gray-300 leading-relaxed mb-4 text-sm line-clamp-3">
                       {project.description}
                     </p>
 
@@ -103,7 +107,7 @@ const Projects = () => {
                       {(Array.isArray(project.techs) ? project.techs : project.techs?.split(',') || []).map((tech, i) => (
                         <span 
                           key={i} 
-                          className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-xs font-medium hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200"
+                          className="px-2 py-1 bg-gray-800 text-gray-300 rounded-md text-xs font-medium hover:bg-blue-600 hover:text-white transition-colors duration-200"
                         >
                           {tech.trim()}
                         </span>
@@ -119,7 +123,7 @@ const Projects = () => {
                             href={project.repo_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-2 text-gray-500 hover:text-blue-600 bg-gray-100 hover:bg-blue-50 rounded-lg transition-all duration-200 hover:scale-110"
+                            className="p-2 text-gray-400 hover:text-blue-400 bg-gray-800 hover:bg-gray-700 rounded-lg transition-all duration-200 hover:scale-110"
                             title={t('projects.view_repository')}
                           >
                             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -132,7 +136,7 @@ const Projects = () => {
                             href={project.live_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-2 text-gray-500 hover:text-blue-600 bg-gray-100 hover:bg-blue-50 rounded-lg transition-all duration-200 hover:scale-110"
+                            className="p-2 text-gray-400 hover:text-blue-400 bg-gray-800 hover:bg-gray-700 rounded-lg transition-all duration-200 hover:scale-110"
                             title={t('projects.view_demo')}
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
