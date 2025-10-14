@@ -175,12 +175,14 @@ def get_projects():
 @admin_bp.route('/projects/<int:project_id>', methods=['GET'])
 def get_project(project_id):
     try:
+        print("Buscando proyecto con ID:", project_id)
         project = Project.query.get(project_id)
+        print("Resultado:", project)
         if not project:
-            return jsonify({'error': 'Project not found.'}), 404
-        return jsonify(project.serialize()), 200
+            return jsonify({'ok': False, 'data': None, 'error': 'Project not found.'}), 404
+        return jsonify({'ok': True, 'data': project.serialize()}), 200
     except Exception as e:
-        return jsonify({'error': 'Error fetching project: ' + str(e)}), 500
+        return jsonify({'ok': False, 'data': None, 'error': 'Error fetching project: ' + str(e)}), 500
     
 # RUTA ACTUALIZAR PROYECTO POR ID
 @admin_bp.route('/projects/<int:project_id>', methods=['PUT'])

@@ -11,29 +11,38 @@ const ProjectDetail = () => {
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  useEffect(() => {
-    const fetchProject = async () => {
-      setLoading(true);
-      const result = await actions.getProjectById(parseInt(id));
-      
-      if (result.ok) {
-        setProject(result.data);
-        setSelectedImageIndex(result.data.main_image_index || 0);
-      } else {
-        navigate('/projects');
+useEffect(() => {
+  const fetchProject = async () => {
+    setLoading(true);
+    const result = await actions.getProjectById(parseInt(id));
+    console.log(result);
+    console.log("ID recibido:", id);
+
+    if (result.ok && result.data) {
+      setProject(result.data);
+
+      const images = Array.isArray(result.data.images) ? result.data.images : [];
+      let index = 0;
+      if (
+        typeof result.data.main_image_index === 'number' &&
+        images.length > 0 &&
+        result.data.main_image_index >= 0 &&
+        result.data.main_image_index < images.length
+      ) {
+        index = result.data.main_image_index;
       }
-      
-      setLoading(false);
-    };
-
-    if (id) {
-      fetchProject();
+      setSelectedImageIndex(index);
+    } else {
+      navigate('/projects');
     }
-  }, [id, actions, navigate]);
 
-  const handleImageClick = (index) => {
-    setSelectedImageIndex(index);
+    setLoading(false);
   };
+
+  if (id) {
+    fetchProject();
+  }
+}, [id, actions, navigate]);
 
   if (loading) {
     return (

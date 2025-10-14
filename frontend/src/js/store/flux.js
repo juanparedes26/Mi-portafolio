@@ -128,22 +128,17 @@ const getState = ({ getStore, setStore }) => {
                 if (!projectId) {
                     return { ok: false, error: 'ID del proyecto requerido' };
                 }
-                
                 try {
                     const resp = await fetch(`${backendUrl}/admin/projects/${projectId}`, {
                         method: "GET",
                         headers: {"Content-Type": "application/json"}
                     });
-                    
                     if (!resp.ok) {
                         const err = await resp.json().catch(() => ({}));
                         return { ok: false, error: err.error || `Error HTTP ${resp.status}` };
                     }
-                    
                     const data = await resp.json();
-                    
-                    return { ok: true, data: data.project };
-                    
+                    return { ok: data.ok, data: data.data };
                 } catch (error) {
                     console.error("getProjectById error:", error);
                     return { ok: false, error: error.message };
