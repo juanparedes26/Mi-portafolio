@@ -51,12 +51,6 @@ export default function Navbar() {
             {t('navbar.projects')}
           </button>
 
-          <button
-            className="bg-transparent border-none text-white hover:!text-blue-600 font-semibold transition-colors duration-200 cursor-pointer"
-            onClick={() => navigate('/skills')}
-          >
-            {t('navbar.skills')}
-          </button>
 
   
           {store.adminToken && (
