@@ -120,6 +120,7 @@ def create_project():
         live_url = data.get('live_url')
         image_url = data.get('image_url')
         images = data.get('images')
+        main_image_index = data.get('main_image_index', 0)
 
         MAX_TECHS = 10
         MAX_IMAGES = 10
@@ -138,17 +139,18 @@ def create_project():
 
 
 
-        if not title or not description or not techs :
-            return jsonify({'error': 'Title, description, techs, and repo_url are required.'}), 400
+        if not title or not description or not techs:
+            return jsonify({'error': 'Title, description, and techs are required.'}), 400
 
         new_project = Project(
             title=title,
             description=description,
             techs=",".join(techs) if isinstance(techs, list) else techs,
-            repo_url=repo_url,
+            repo_url=repo_url or "",  
             live_url=live_url,
             image_url=image_url,
-            images=",".join(images) if isinstance(images, list) else images
+            images=",".join(images) if isinstance(images, list) else images,
+            main_image_index=main_image_index
         )
 
         db.session.add(new_project)
@@ -204,6 +206,7 @@ def update_project(project_id):
         live_url = data.get('live_url', project.live_url)
         image_url = data.get('image_url', project.image_url)
         images = data.get('images', project.images.split(",") if project.images else [])
+        main_image_index = data.get('main_image_index', project.main_image_index or 0)
 
         MAX_TECHS = 10
         MAX_IMAGES = 10
@@ -223,10 +226,11 @@ def update_project(project_id):
         project.title = title
         project.description = description
         project.techs = ",".join(techs) if isinstance(techs, list) else techs
-        project.repo_url = repo_url
+        project.repo_url = repo_url or ""  # Usar string vacío si es None
         project.live_url = live_url
         project.image_url = image_url
         project.images = ",".join(images) if isinstance(images, list) else images
+        project.main_image_index = main_image_index
 
         db.session.commit()
 
@@ -277,10 +281,56 @@ def upload_file():
             filename = secure_filename(file.filename)
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             file.save(file_path)
-            file_url = f'/static/uploads/{filename}'
+            file_url = f'http://localhost:5100/static/uploads/{filename}'
             return jsonify({'message': 'File uploaded successfully.', 'file_url': file_url}), 201
         else:
             return jsonify({'error': 'File type not allowed.'}), 400
 
     except Exception as e:
         return jsonify({'error': 'Error uploading file: ' + str(e)}), 500
+
+
+# RUTA SUBIR MÚLTIPLES IMÁGENES
+@admin_bp.route('/upload-multiple', methods=['POST'])
+@jwt_required()
+def upload_multiple_files():
+    try:
+        current_user_id = get_jwt_identity()
+        if not current_user_id:
+            return jsonify({'error': 'Token inválido o no proporcionado'}), 401
+
+        if 'files' not in request.files:
+            return jsonify({'error': 'No files in the request.'}), 400
+
+        files = request.files.getlist('files')
+        if not files or len(files) == 0:
+            return jsonify({'error': 'No files selected.'}), 400
+
+        MAX_FILES = 10
+        if len(files) > MAX_FILES:
+            return jsonify({'error': f'Máximo {MAX_FILES} archivos permitidos.'}), 400
+
+        uploaded_files = []
+        for file in files:
+            if file and file.filename != '' and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                # Agregar timestamp para evitar conflictos de nombres
+                import time
+                timestamp = str(int(time.time()))
+                name, ext = os.path.splitext(filename)
+                unique_filename = f"{name}_{timestamp}{ext}"
+                
+                file_path = os.path.join(UPLOAD_FOLDER, unique_filename)
+                file.save(file_path)
+                file_url = f'http://localhost:5100/static/uploads/{unique_filename}'
+                uploaded_files.append(file_url)
+            else:
+                return jsonify({'error': f'File type not allowed: {file.filename}'}), 400
+
+        return jsonify({
+            'message': f'{len(uploaded_files)} files uploaded successfully.',
+            'files': uploaded_files
+        }), 201
+
+    except Exception as e:
+        return jsonify({'error': 'Error uploading files: ' + str(e)}), 500

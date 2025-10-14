@@ -58,6 +58,17 @@ const getState = ({ getStore, setStore }) => {
                     return { ok: false, error: 'Tecnologías requeridas (máx. 10)' };
                 }
                 
+                // Validar imágenes múltiples
+                if (projectData.images && (!Array.isArray(projectData.images) || projectData.images.length > 10)) {
+                    return { ok: false, error: 'Máximo 10 imágenes permitidas' };
+                }
+
+                // Validar índice de imagen principal
+                if (projectData.main_image_index !== undefined && projectData.images && 
+                    (projectData.main_image_index < 0 || projectData.main_image_index >= projectData.images.length)) {
+                    return { ok: false, error: 'Índice de imagen principal inválido' };
+                }
+                
                 if (!token) {
                     return { ok: false, error: 'No estás autenticado' };
                 }
@@ -158,7 +169,18 @@ const getState = ({ getStore, setStore }) => {
                 }
                 if (projectData.techs && (!Array.isArray(projectData.techs) || projectData.techs.length > 10)) {
                     return { ok: false, error: 'Máximo 10 tecnologías permitidas' };
+
                 }
+          
+                if (projectData.images && (!Array.isArray(projectData.images) || projectData.images.length > 10)) {
+                    return { ok: false, error: 'Máximo 10 imágenes permitidas' };
+                }
+
+                if (projectData.main_image_index !== undefined && projectData.images && 
+                    (projectData.main_image_index < 0 || projectData.main_image_index >= projectData.images.length)) {
+                    return { ok: false, error: 'Índice de imagen principal inválido' };
+                }
+
                 
                 if (!token) {
                     return { ok: false, error: 'No estás autenticado' };
@@ -273,6 +295,58 @@ const getState = ({ getStore, setStore }) => {
                     const data = await resp.json();
                     
                     return { ok: true, data: { file_url: data.file_url } };
+                    
+                } catch (error) {
+                    return { ok: false, error: error.message };
+                }
+            },
+            uploadMultipleImages: async (files) => {
+                const store = getStore();
+                const token = store.adminToken;
+                
+                if (!token) {
+                    return { ok: false, error: 'No estás autenticado' };
+                }
+                
+                if (!files || files.length === 0) {
+                    return { ok: false, error: 'No se seleccionaron archivos' };
+                }
+
+                const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                
+                // Validar todos los archivos antes de subir
+                for (let file of files) {
+                    if (!allowedTypes.includes(file.type)) {
+                        return { ok: false, error: `Tipo de archivo no permitido: ${file.name}. Use PNG, JPG, JPEG o GIF.` };
+                    }
+                    if (file.size > maxSize) {
+                        return { ok: false, error: `Archivo muy grande: ${file.name}. Máximo 5MB.` };
+                    }
+                }
+                
+                try {
+                    const formData = new FormData();
+                    files.forEach(file => {
+                        formData.append('files', file);
+                    });
+                    
+                    const resp = await fetch(`${backendUrl}/admin/upload-multiple`, {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: formData
+                    });
+                    
+                    if (!resp.ok) {
+                        const err = await resp.json().catch(() => ({}));
+                        return { ok: false, error: err.error || `Error HTTP ${resp.status}` };
+                    }
+                    
+                    const data = await resp.json();
+                    
+                    return { ok: true, data: { files: data.files } };
                     
                 } catch (error) {
                     return { ok: false, error: error.message };

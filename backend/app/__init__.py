@@ -49,4 +49,12 @@ def create_app():
     app.register_blueprint(public_bp, url_prefix='/public')
     app.register_blueprint(user_bp, url_prefix='/user')
 
+    # Ruta para servir archivos estáticos subidos
+    from flask import send_from_directory
+    
+    @app.route('/static/uploads/<filename>')
+    def uploaded_file(filename):
+        uploads_dir = os.path.join(os.path.dirname(__file__), 'static', 'uploads')
+        return send_from_directory(uploads_dir, filename)
+
     return app

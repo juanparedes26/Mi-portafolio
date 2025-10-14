@@ -24,6 +24,9 @@
     "no_projects": "No projects published yet.",
     "view_more": "View more",
     "view_repository": "View repository",
-    "view_demo": "View demo"
+    "view_demo": "View demo",
+    "showing": "Showing",
+    "of": "of",
+    "projects": "projects"
   }
 }

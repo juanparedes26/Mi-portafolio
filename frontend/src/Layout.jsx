@@ -9,6 +9,8 @@ import Navbar from './components/Navbar.jsx';
 import Login from './views/Login.jsx';
 import Admin from './views/Admin.jsx';
 import Projects from './views/Projects.jsx';
+import ProjectForm from './views/ProjectForm.jsx';
+import ProjectDetail from './views/ProjectDetail.jsx';
 
 const Layout = () => {
     const basename = import.meta.env.VITE_BASENAME || "";
@@ -23,6 +25,8 @@ const Layout = () => {
                 <Route exact path='/admin-login' element={<Login/>} />
                 <Route exact path='/admin' element={<Admin/>} />
                 <Route exact path='/projects' element={<Projects/>} />
+                <Route exact path='/projects/:id' element={<ProjectDetail/>} />
+                <Route exact path='/project-form' element={<ProjectForm/>} />
             </Routes>
         </BrowserRouter>
     </div>

@@ -24,6 +24,9 @@
     "no_projects": "Aún no hay proyectos publicados.",
     "view_more": "Ver más",
     "view_repository": "Ver repositorio",
-    "view_demo": "Ver demo"
+    "view_demo": "Ver demo",
+    "showing": "Mostrando",
+    "of": "de",
+    "projects": "proyectos"
   }
 }

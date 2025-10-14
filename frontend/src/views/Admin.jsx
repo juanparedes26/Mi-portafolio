@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../js/store/appContext';
+import ProjectForm from './ProjectForm';
 
  function Admin() {
   const { store, actions } = useContext(Context);
@@ -19,11 +20,25 @@ import { Context } from '../js/store/appContext';
   // Cargar proyectos al montar
   useEffect(() => {
     if (store.adminToken) {
+      const loadProjects = async () => {
+        setLoading(true);
+        try {
+          const result = await actions.getProjects();
+          if (!result.ok) {
+            console.error('Error loading projects:', result.error);
+          }
+        } catch (error) {
+          console.error('Error loading projects:', error);
+        }
+        setLoading(false);
+      };
       loadProjects();
     }
-  }, [store.adminToken]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [store.adminToken]); // Solo queremos que se ejecute cuando cambie el token
 
-  const loadProjects = async () => {
+  // Función para recargar proyectos después de operaciones
+  const refreshProjects = async () => {
     setLoading(true);
     try {
       const result = await actions.getProjects();
@@ -40,7 +55,7 @@ import { Context } from '../js/store/appContext';
     if (window.confirm('¿Estás seguro de eliminar este proyecto?')) {
       const result = await actions.deleteProject(projectId);
       if (result.ok) {
-        // Proyecto eliminado del store automáticamente
+        alert('Proyecto eliminado');
       } else {
         alert('Error: ' + result.error);
       }
@@ -53,7 +68,7 @@ import { Context } from '../js/store/appContext';
 
   return (
     <div className="fixed inset-0 bg-gray-900 text-white overflow-hidden">
-      {/* Background image like Home */}
+     
       <div className="absolute inset-0">
         <img
           src="/deskdark.jpg"
@@ -150,27 +165,16 @@ import { Context } from '../js/store/appContext';
             </div>
           )}
 
-          {/* Formulario modal (placeholder por ahora) */}
+          {/* Formulario modal */}
           {showForm && (
-            <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-              <div className="bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl p-8 w-full max-w-md mx-4">
-                <h2 className="text-2xl font-black uppercase tracking-tight mb-6 text-white">
-                  {editingProject ? 'EDITAR PROYECTO' : 'NUEVO PROYECTO'}
-                </h2>
-                <p className="text-gray-300 mb-6 font-light">Formulario en construcción...</p>
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => {
-                      setShowForm(false);
-                      setEditingProject(null);
-                    }}
-                    className="px-6 py-2 bg-transparent border border-gray-400 text-gray-400 rounded-lg font-semibold hover:bg-gray-400 hover:text-white transition-all duration-200"
-                  >
-                    Cerrar
-                  </button>
-                </div>
-              </div>
-            </div>
+            <ProjectForm
+              project={editingProject}
+              onClose={() => {
+                setShowForm(false);
+                setEditingProject(null);
+              }}
+              onSave={refreshProjects}
+            />
           )}
 
         </div>
