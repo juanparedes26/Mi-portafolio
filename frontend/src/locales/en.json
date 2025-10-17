@@ -33,5 +33,28 @@
     "showing": "Showing",
     "of": "of",
     "projects": "projects"
+  },
+  "project_detail": {
+    "not_found": "Project not found",
+    "back_to_projects": "Back to Projects",
+    "technologies": "Technologies",
+    "project_details": "Project Details",
+    "gallery": "Image gallery",
+    "image": "image",
+    "images": "images",
+    "navigation": "Navigation",
+    "navigation_help": "Use keyboard arrows ← → or swipe on mobile",
+    "swipe": "Swipe",
+    "repository": "Repository",
+    "demo": "View Demo",
+    "status": "Status",
+    "status_completed": "Project completed and functional",
+    "connect": "Connect With Me",
+    "github_personal": "Personal GitHub",
+    "explore_projects": "Explore more projects",
+    "professional_network": "Professional network",
+    "project_description": "Project Description",
+    "no_images": "No images available",
+    "no_gallery": "This project doesn't have an image gallery yet"
   }
 }

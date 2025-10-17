@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Context } from '../js/store/appContext';
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { actions } = useContext(Context);
+  const { t } = useTranslation();
   
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -83,7 +85,7 @@ useEffect(() => {
     const touchEndX = e.changedTouches[0].clientX;
     const diff = touchStartX - touchEndX;
     
-    if (Math.abs(diff) > 50) { // Umbral mínimo para swipe
+    if (Math.abs(diff) > 50) {
       if (diff > 0) {
         nextImage();
       } else {
@@ -128,12 +130,12 @@ useEffect(() => {
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-6">❌</div>
-          <p className="text-xl text-gray-400 mb-4">Proyecto no encontrado</p>
+          <p className="text-xl text-gray-400 mb-4">{t('project_detail.not_found')}</p>
           <button
             onClick={() => navigate('/projects')}
             className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
           >
-            Volver a Proyectos
+            {t('project_detail.back_to_projects')}
           </button>
         </div>
       </div>
@@ -217,7 +219,7 @@ useEffect(() => {
                       {project.images.length > 1 && (
                         <div className="absolute bottom-6 right-6 md:hidden">
                           <div className="bg-black/70 text-white px-3 py-1 rounded-full text-xs backdrop-blur-md flex items-center gap-1">
-                            <span>Desliza</span>
+                            <span>{t('project_detail.swipe')}</span>
                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
                             </svg>
@@ -283,8 +285,8 @@ useEffect(() => {
                 <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl h-96 md:h-[600px] flex items-center justify-center shadow-2xl">
                   <div className="text-center text-gray-500">
                     <div className="text-8xl mb-6 opacity-50">🖼️</div>
-                    <p className="text-xl font-medium">No hay imágenes disponibles</p>
-                    <p className="text-gray-400 mt-2">Este proyecto aún no tiene galería de imágenes</p>
+                    <p className="text-xl font-medium">{t('project_detail.no_images')}</p>
+                    <p className="text-gray-400 mt-2">{t('project_detail.no_gallery')}</p>
                   </div>
                 </div>
               )}
@@ -300,7 +302,7 @@ useEffect(() => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-white">Tecnologías</h3>
+                  <h3 className="text-xl font-bold text-white">{t('project_detail.technologies')}</h3>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   {(Array.isArray(project.techs) ? project.techs : project.techs?.split(',') || []).map((tech, i) => (
@@ -322,7 +324,7 @@ useEffect(() => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-white">Detalles del Proyecto</h3>
+                  <h3 className="text-xl font-bold text-white">{t('project_detail.project_details')}</h3>
                 </div>
                 <div className="space-y-4">
                   {project.images && project.images.length > 0 && (
@@ -331,8 +333,10 @@ useEffect(() => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                       <div>
-                        <span className="text-gray-400 text-sm block">Galería de imágenes</span>
-                        <p className="text-white font-medium">{project.images.length} imagen{project.images.length !== 1 ? 'es' : ''}</p>
+                        <span className="text-gray-400 text-sm block">{t('project_detail.gallery')}</span>
+                        <p className="text-white font-medium">
+                          {project.images.length} {project.images.length === 1 ? t('project_detail.image') : t('project_detail.images')}
+                        </p>
                       </div>
                     </div>
                   )}
@@ -344,8 +348,8 @@ useEffect(() => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                       <div>
-                        <span className="text-blue-400 text-sm block font-medium">Navegación</span>
-                        <p className="text-blue-300 text-xs">Usa las flechas del teclado ← → o desliza en móvil</p>
+                        <span className="text-blue-400 text-sm block font-medium">{t('project_detail.navigation')}</span>
+                        <p className="text-blue-300 text-xs">{t('project_detail.navigation_help')}</p>
                       </div>
                     </div>
                   )}
@@ -363,7 +367,7 @@ useEffect(() => {
                           <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                           </svg>
-                          <span className="text-gray-300 hover:text-white transition-colors">Repositorio</span>
+                          <span className="text-gray-300 hover:text-white transition-colors">{t('project_detail.repository')}</span>
                         </a>
                       )}
                       {project.live_url && project.live_url.trim() && (
@@ -376,7 +380,7 @@ useEffect(() => {
                           <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
-                          <span className="text-blue-300 hover:text-blue-200 transition-colors">Ver Demo</span>
+                          <span className="text-blue-300 hover:text-blue-200 transition-colors">{t('project_detail.demo')}</span>
                         </a>
                       )}
                     </div>
@@ -388,8 +392,8 @@ useEffect(() => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <div>
-                      <span className="text-emerald-400 text-sm block font-medium">Estado</span>
-                      <p className="text-emerald-300 text-xs">Proyecto completado y funcional</p>
+                      <span className="text-emerald-400 text-sm block font-medium">{t('project_detail.status')}</span>
+                      <p className="text-emerald-300 text-xs">{t('project_detail.status_completed')}</p>
                     </div>
                   </div>
                 </div>
@@ -403,7 +407,7 @@ useEffect(() => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-white">Conecta Conmigo</h3>
+                  <h3 className="text-xl font-bold text-white">{t('project_detail.connect')}</h3>
                 </div>
                 <div className="space-y-3">
                   <a
@@ -418,8 +422,8 @@ useEffect(() => {
                       </svg>
                     </div>
                     <div className="flex-1">
-                      <span className="text-white font-medium block">GitHub Personal</span>
-                      <span className="text-gray-400 text-sm">Explora más proyectos</span>
+                      <span className="text-white font-medium block">{t('project_detail.github_personal')}</span>
+                      <span className="text-gray-400 text-sm">{t('project_detail.explore_projects')}</span>
                     </div>
                     <svg className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -439,7 +443,7 @@ useEffect(() => {
                     </div>
                     <div className="flex-1">
                       <span className="text-white font-medium block">LinkedIn</span>
-                      <span className="text-gray-400 text-sm">Red profesional</span>
+                      <span className="text-gray-400 text-sm">{t('project_detail.professional_network')}</span>
                     </div>
                     <svg className="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -459,7 +463,7 @@ useEffect(() => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
-                <h2 className="text-2xl font-bold text-white">Descripción del Proyecto</h2>
+                <h2 className="text-2xl font-bold text-white">{t('project_detail.project_description')}</h2>
               </div>
               <p className="text-gray-300 leading-relaxed text-base">
                 {project.description}
@@ -472,7 +476,7 @@ useEffect(() => {
                 onClick={() => navigate('/projects')}
                 className="px-8 py-3 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors"
               >
-                Volver a Proyectos
+                {t('project_detail.back_to_projects')}
               </button>
             </div>
           </div>

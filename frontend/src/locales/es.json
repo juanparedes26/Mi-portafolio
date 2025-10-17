@@ -33,5 +33,28 @@
     "showing": "Mostrando",
     "of": "de",
     "projects": "proyectos"
+  },
+  "project_detail": {
+    "not_found": "Proyecto no encontrado",
+    "back_to_projects": "Volver a Proyectos",
+    "technologies": "Tecnologías",
+    "project_details": "Detalles del Proyecto",
+    "gallery": "Galería de imágenes",
+    "image": "imagen",
+    "images": "imágenes",
+    "navigation": "Navegación",
+    "navigation_help": "Usa las flechas del teclado ← → o desliza en móvil",
+    "swipe": "Desliza",
+    "repository": "Repositorio",
+    "demo": "Ver Demo",
+    "status": "Estado",
+    "status_completed": "Proyecto completado y funcional",
+    "connect": "Conecta Conmigo",
+    "github_personal": "GitHub Personal",
+    "explore_projects": "Explora más proyectos",
+    "professional_network": "Red profesional",
+    "project_description": "Descripción del Proyecto",
+    "no_images": "No hay imágenes disponibles",
+    "no_gallery": "Este proyecto aún no tiene galería de imágenes"
   }
 }
