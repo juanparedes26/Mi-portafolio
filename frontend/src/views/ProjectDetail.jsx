@@ -466,7 +466,7 @@ useEffect(() => {
               </p>
             </div>
             
-            {/* Botón para volver */}
+        
             <div className="flex justify-center mt-8">
               <button
                 onClick={() => navigate('/projects')}
