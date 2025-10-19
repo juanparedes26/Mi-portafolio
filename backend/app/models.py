@@ -19,7 +19,9 @@ class User(db.Model):
 class Project(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(100), nullable=False)
-    description: Mapped[str] = mapped_column(String(1000), nullable=False)
+    description: Mapped[str] = mapped_column(String(2000), nullable=False)
+    title_en: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    description_en: Mapped[Optional[str]] = mapped_column(String(2000), nullable=True)
     techs: Mapped[list[str]] = mapped_column(String(300), nullable=False) 
     repo_url: Mapped[str] = mapped_column(String(300), nullable=False)
     live_url: Mapped[Optional[str]] = mapped_column(String(300), nullable=True)
@@ -29,7 +31,7 @@ class Project(db.Model):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     def serialize(self):
-        # Limpiar lista de imágenes, eliminar elementos vacíos
+        
         images_list = [img for img in self.images.split(",") if img] if self.images else []
 
         def make_full_url(url):
@@ -49,6 +51,8 @@ class Project(db.Model):
             'id': self.id,
             'title': self.title,
             'description': self.description,
+            'title_en': self.title_en,
+            'description_en': self.description_en,
             'techs': [tech for tech in self.techs.split(",") if tech] if self.techs else [],
             'repo_url': self.repo_url,
             'live_url': self.live_url,

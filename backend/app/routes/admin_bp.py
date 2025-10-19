@@ -115,6 +115,8 @@ def create_project():
             return jsonify({'error': 'Request body must be JSON.'}), 400
         title = data.get('title')
         description = data.get('description')
+        title_en = data.get('title_en')
+        description_en = data.get('description_en')
         techs = data.get('techs')
         repo_url = data.get('repo_url')
         live_url = data.get('live_url')
@@ -133,9 +135,16 @@ def create_project():
 
         if len(title) > 100:
             return jsonify({'error': 'El título no puede superar 100 caracteres.'}), 400
-
+       
         if len(description) > 2000:
             return jsonify({'error': 'La descripción no puede superar 2000 caracteres.'}), 400
+        
+        if title_en and len(title_en) > 100:
+            return jsonify({'error': 'El título en inglés no puede superar 100 caracteres.'}), 400
+
+        if description_en and len(description_en) > 2000:
+            return jsonify({'error': 'La descripción en inglés no puede superar 2000 caracteres.'}), 400
+
 
 
 
@@ -145,6 +154,8 @@ def create_project():
         new_project = Project(
             title=title,
             description=description,
+            title_en=title_en,
+            description_en=description_en,
             techs=",".join(techs) if isinstance(techs, list) else techs,
             repo_url=repo_url or "",  
             live_url=live_url,
@@ -203,6 +214,8 @@ def update_project(project_id):
 
         title = data.get('title', project.title)
         description = data.get('description', project.description)
+        title_en = data.get('title_en', project.title_en)
+        description_en = data.get('description_en', project.description_en)
         techs = data.get('techs', project.techs.split(",") if project.techs else [])
         repo_url = data.get('repo_url', project.repo_url)
         live_url = data.get('live_url', project.live_url)
@@ -221,14 +234,20 @@ def update_project(project_id):
 
         if len(title) > 100:
             return jsonify({'error': 'El título no puede superar 100 caracteres.'}), 400
-
+        
         if len(description) > 2000:
             return jsonify({'error': 'La descripción no puede superar 2000 caracteres.'}), 400
+        if title_en and len(title_en) > 100:
+            return jsonify({'error': 'El título en inglés no puede superar 100 caracteres.'}), 400
+        if description_en and len(description_en) > 2000:
+            return jsonify({'error': 'La descripción en inglés no puede superar 2000 caracteres.'}), 400
 
         project.title = title
         project.description = description
+        project.title_en = title_en
+        project.description_en = description_en
         project.techs = ",".join(techs) if isinstance(techs, list) else techs
-        project.repo_url = repo_url or ""  # Usar string vacío si es None
+        project.repo_url = repo_url or ""  
         project.live_url = live_url
         project.image_url = image_url
         project.images = ",".join(images) if isinstance(images, list) else images
