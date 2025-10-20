@@ -8,11 +8,13 @@ const ProjectForm = ({ project = null, onClose, onSave }) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+    title_en: '',
+    description_en: '',
     techs: '',
     repo_url: '',
     live_url: '',
-    images: [],           // Array de URLs de imágenes
-    main_image_index: 0   // Índice de la imagen principal
+    images: [],           
+    main_image_index: 0   
   });
 
   // Estados para manejo de imágenes
@@ -25,6 +27,8 @@ const ProjectForm = ({ project = null, onClose, onSave }) => {
       setFormData({
         title: project.title || '',
         description: project.description || '',
+        title_en: project.title_en || '',
+        description_en: project.description_en || '',
         techs: Array.isArray(project.techs) 
           ? project.techs.join(', ') 
           : (typeof project.techs === 'string' && project.techs.includes(',') 
@@ -36,10 +40,12 @@ const ProjectForm = ({ project = null, onClose, onSave }) => {
         main_image_index: project.main_image_index || 0
       });
     } else {
-      // Resetear formulario para nuevo proyecto
+  
       setFormData({
         title: '',
         description: '',
+        title_en: '',
+        description_en: '',
         techs: '',
         repo_url: '',
         live_url: '',
@@ -155,6 +161,8 @@ const ProjectForm = ({ project = null, onClose, onSave }) => {
     const projectData = {
       title: formData.title.trim(),
       description: formData.description.trim(),
+      title_en: formData.title_en.trim() || null,
+      description_en: formData.description_en.trim() || null,
       techs: formData.techs.split(',').map(tech => tech.trim()).filter(tech => tech),
       repo_url: formData.repo_url.trim() || "",
       live_url: formData.live_url.trim() || "",
@@ -197,7 +205,7 @@ const ProjectForm = ({ project = null, onClose, onSave }) => {
             {/* Título */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Título *
+                Título (Español) *
               </label>
               <input
                 type="text"
@@ -205,15 +213,30 @@ const ProjectForm = ({ project = null, onClose, onSave }) => {
                 value={formData.title}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500"
-                placeholder="Nombre del proyecto"
+                placeholder="Nombre del proyecto en español"
                 required
+              />
+            </div>
+
+            {/* Título en inglés */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Título (English)
+              </label>
+              <input
+                type="text"
+                name="title_en"
+                value={formData.title_en}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500"
+                placeholder="Project title in English"
               />
             </div>
 
             {/* Descripción */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Descripción *
+                Descripción (Español) *
               </label>
               <textarea
                 name="description"
@@ -221,8 +244,23 @@ const ProjectForm = ({ project = null, onClose, onSave }) => {
                 onChange={handleInputChange}
                 rows={4}
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500"
-                placeholder="Describe tu proyecto..."
+                placeholder="Describe tu proyecto en español..."
                 required
+              />
+            </div>
+
+            {/* Descripción en inglés */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Descripción (English)
+              </label>
+              <textarea
+                name="description_en"
+                value={formData.description_en}
+                onChange={handleInputChange}
+                rows={4}
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500"
+                placeholder="Describe your project in English..."
               />
             </div>
 

@@ -12,7 +12,10 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es');
+    const newLanguage = i18n.language === 'es' ? 'en' : 'es';
+    i18n.changeLanguage(newLanguage);
+    // Persistir el idioma seleccionado en localStorage
+    localStorage.setItem('preferred-language', newLanguage);
   };
 
   const toggleMenu = () => {

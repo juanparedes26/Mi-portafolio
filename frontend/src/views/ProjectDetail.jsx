@@ -7,13 +7,27 @@ const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { actions } = useContext(Context);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Función para obtener el contenido bilingüe
+  const getProjectContent = (project) => {
+    if (!project) return { title: '', description: '' };
+    
+    return {
+      title: i18n.language === 'en' && project.title_en 
+        ? project.title_en 
+        : project.title,
+      description: i18n.language === 'en' && project.description_en 
+        ? project.description_en 
+        : project.description
+    };
+  };
 
 useEffect(() => {
   const fetchProject = async () => {
@@ -142,6 +156,9 @@ useEffect(() => {
     );
   }
 
+  // Obtener contenido bilingüe del proyecto
+  const content = getProjectContent(project);
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Contenido principal */}
@@ -150,7 +167,7 @@ useEffect(() => {
           {/* Header del proyecto simple */}
           <div className="mb-8">
             <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white">
-              {project.title}
+              {content.title}
             </h1>
           </div>
 
@@ -169,7 +186,7 @@ useEffect(() => {
                     >
                       <img
                         src={project.images[selectedImageIndex]}
-                        alt={`${project.title} - Imagen ${selectedImageIndex + 1}`}
+                        alt={`${content.title} - Imagen ${selectedImageIndex + 1}`}
                         className={`w-full h-96 md:h-[600px] object-cover transition-all duration-300 ${
                           isTransitioning ? 'scale-105' : 'scale-100'
                         }`}
@@ -266,7 +283,7 @@ useEffect(() => {
                           >
                             <img
                               src={image}
-                              alt={`${project.title} - Miniatura ${index + 1}`}
+                              alt={`${content.title} - Miniatura ${index + 1}`}
                               className="w-24 h-16 object-cover"
                               loading="lazy"
                             />
@@ -466,7 +483,7 @@ useEffect(() => {
                 <h2 className="text-2xl font-bold text-white">{t('project_detail.project_description')}</h2>
               </div>
               <p className="text-gray-300 leading-relaxed text-base">
-                {project.description}
+                {content.description}
               </p>
             </div>
             

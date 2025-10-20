@@ -3,14 +3,26 @@ import { useTranslation } from 'react-i18next';
 import { Context } from '../js/store/appContext';
 
 const Projects = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { actions } = useContext(Context);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 6;
 
-
+  // Función para obtener el contenido bilingüe
+  const getProjectContent = (project) => {
+    if (!project) return { title: '', description: '' };
+    
+    return {
+      title: i18n.language === 'en' && project.title_en 
+        ? project.title_en 
+        : project.title,
+      description: i18n.language === 'en' && project.description_en 
+        ? project.description_en 
+        : project.description
+    };
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -87,7 +99,9 @@ const Projects = () => {
             <>
               {/* Grid de proyectos */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" style={{ perspective: '1200px' }}>
-                {currentProjects.map((project, idx) => (
+                {currentProjects.map((project, idx) => {
+                  const content = getProjectContent(project);
+                  return (
                   <div 
                     key={project.id}
                     className="group card-3d card-animate relative bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800"
@@ -99,7 +113,7 @@ const Projects = () => {
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={project.image_url || '/deskdark.jpg'}
-                        alt={project.title}
+                        alt={content.title}
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-colors duration-500"></div>
@@ -116,14 +130,13 @@ const Projects = () => {
                     <div className="p-6 card-content">
                       {/* Título */}
                       <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors duration-300">
-                        {project.title}
+                        {content.title}
                       </h3>
 
                       {/* Descripción */}
                       <p className="text-gray-300 leading-relaxed mb-4 text-sm line-clamp-3">
-                        {project.description}
+                        {content.description}
                       </p>
-
                       {/* Tecnologías */}
                       <div className="flex flex-wrap gap-2 mb-6">
                         {(Array.isArray(project.techs) ? project.techs : project.techs?.split(',') || []).map((tech, i) => (
@@ -178,7 +191,8 @@ const Projects = () => {
                       </div>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Información de paginación */}
