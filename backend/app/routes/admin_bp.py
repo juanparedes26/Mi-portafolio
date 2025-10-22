@@ -302,7 +302,9 @@ def upload_file():
             filename = secure_filename(file.filename)
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             file.save(file_path)
-            file_url = f'http://localhost:5100/static/uploads/{filename}'
+            # Usar variable de entorno o detectar el host automáticamente
+            base_url = os.environ.get('BASE_URL', 'https://web-production-5461c.up.railway.app')
+            file_url = f'{base_url}/static/uploads/{filename}'
             return jsonify({'message': 'File uploaded successfully.', 'file_url': file_url}), 201
         else:
             return jsonify({'error': 'File type not allowed.'}), 400
@@ -343,7 +345,9 @@ def upload_multiple_files():
                 
                 file_path = os.path.join(UPLOAD_FOLDER, unique_filename)
                 file.save(file_path)
-                file_url = f'http://localhost:5100/static/uploads/{unique_filename}'
+                # Usar variable de entorno o detectar el host automáticamente
+                base_url = os.environ.get('BASE_URL', 'https://web-production-5461c.up.railway.app')
+                file_url = f'{base_url}/static/uploads/{unique_filename}'
                 uploaded_files.append(file_url)
             else:
                 return jsonify({'error': f'File type not allowed: {file.filename}'}), 400
