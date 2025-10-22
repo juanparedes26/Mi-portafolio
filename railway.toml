@@ -2,7 +2,7 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "cd backend && flask db upgrade && gunicorn app.run:app --bind 0.0.0.0:$PORT"
+startCommand = "bash -c 'cd backend && flask db upgrade && gunicorn app.run:app --bind 0.0.0.0:$PORT'"
 healthcheckPath = "/"
 healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"
