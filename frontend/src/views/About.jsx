@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { 
   SiReact, 
@@ -21,6 +21,16 @@ import { FaRobot, FaCogs } from 'react-icons/fa';
 
 function About() {
   const { t } = useTranslation();
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <section id="about" className="min-h-screen w-full bg-gray-900 text-white relative overflow-hidden pt-24 md:pt-20">
@@ -29,12 +39,12 @@ function About() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-black/60" />
       </div>
 
-      <div className="relative z-10 w-full h-full flex items-center">
+      <div className="relative z-10 w-full">
         <div className="w-full px-8 md:px-16 lg:px-24">
-          <div className="mx-auto max-w-[1400px] min-h-[calc(100vh-5rem)] grid grid-cols-1 lg:grid-cols-2 gap-0 items-center">
+          <div className="mx-auto max-w-[1400px] flex">
             
-            {/* Left Content */}
-            <div className="flex flex-col justify-center py-8 lg:py-0 pr-0 lg:pr-16">
+            {/* Left Content - Takes full width on large screens due to fixed image */}
+            <div className="w-full lg:w-1/2 flex flex-col justify-center py-12 lg:py-20 pr-0 lg:pr-16">
               <div className="max-w-lg">
                
               
@@ -193,26 +203,52 @@ function About() {
             </div>
             
 
-         
-            <div className="relative h-full min-h-[60vh] lg:min-h-screen flex items-center justify-center">
-              <div className="absolute inset-0 w-full h-full">
-                <img
-                  src="/about-portrait.jpg"
-                  alt={t('about.photo_alt') || 'Portrait'}
-                  className="w-full h-full object-cover object-center grayscale"
-                  onError={(e) => { e.currentTarget.src = '/Retrato.jpg'; }}
-                />
-             
-                <div className="absolute inset-0 bg-black/10" />
-              </div>
-              
-            
-              <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
-            </div>
-
           </div>
         </div>
       </div>
+
+      {/* Right Image - Fixed Parallax */}
+      <div className="fixed top-0 right-0 w-full lg:w-1/2 h-screen hidden lg:block z-0">
+        <div 
+          className="absolute inset-0 w-full h-full overflow-hidden"
+          style={{
+            transform: `translateY(${scrollY * 0.1}px)`,
+          }}
+        >
+          <img
+            src="/about-portrait.jpg"
+            alt={t('about.photo_alt') || 'Portrait'}
+            className="w-full h-[110%] object-cover object-center grayscale hover:grayscale-0 transition-all duration-700 ease-out"
+            style={{
+              transform: `translateY(${-scrollY * 0.15}px)`,
+            }}
+            onError={(e) => { e.currentTarget.src = '/Retrato.jpg'; }}
+          />
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+        
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-black/30" />
+        
+        {/* Decorative elements */}
+        <div className="absolute top-1/2 left-8 w-1 h-24 bg-blue-500/20 transform -translate-y-1/2"></div>
+        <div className="absolute bottom-8 right-8 w-24 h-1 bg-blue-500/20"></div>
+      </div>
+
+      {/* Mobile Image */}
+      <div className="relative h-[60vh] lg:hidden order-first">
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <img
+            src="/about-portrait.jpg"
+            alt={t('about.photo_alt') || 'Portrait'}
+            className="w-full h-full object-cover object-center grayscale"
+            onError={(e) => { e.currentTarget.src = '/Retrato.jpg'; }}
+          />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent" />
+      </div>
+
     </section>
   );
 }
