@@ -10,6 +10,9 @@ instance/
 .env.*
 backend/.env
 
+# === UPLOADS (No subir imágenes de prueba) ===
+backend/app/static/uploads/
+
 !backend/.env.dev
 !backend/.env.prod
 

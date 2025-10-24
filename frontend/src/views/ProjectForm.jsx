@@ -20,8 +20,8 @@ const ProjectForm = ({ project = null, onClose, onSave }) => {
   // Estados para manejo de imágenes
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState([]); // Archivos seleccionados pero no subidos
-  const [fileErrors, setFileErrors] = useState([]); // Errores de validación
+  const [selectedFiles, setSelectedFiles] = useState([]); 
+  const [fileErrors, setFileErrors] = useState([]); 
 
   // Cargar datos del proyecto si estamos editando
   useEffect(() => {
