@@ -4,7 +4,7 @@ import { Context } from '../js/store/appContext';
 const ProjectForm = ({ project = null, onClose, onSave }) => {
   const { actions } = useContext(Context);
   
-  // Estados básicos del formulario
+  
   const [formData, setFormData] = useState({
     title: '',
     description: '',

@@ -45,9 +45,26 @@ function About() {
               
                 <div className="w-16 h-0.5 bg-blue-600 mb-6" />
 
-                <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-8 font-light">
-                  {t('about.description')}
-                </p>
+                {/* Professional Story */}
+                <div className="space-y-6 mb-8">
+                  <p className="text-gray-300 text-sm md:text-base leading-relaxed font-light">
+                    {t('about.description')}
+                  </p>
+                  
+                  <p className="text-gray-400 text-sm md:text-base leading-relaxed font-light">
+                    {t('about.story')}
+                  </p>
+                  
+                  <div className="bg-gray-800/30 border-l-4 border-blue-500 pl-4 py-2">
+                    <p className="text-gray-300 text-sm leading-relaxed font-light italic">
+                      {t('about.achievements')}
+                    </p>
+                  </div>
+                  
+                  <p className="text-gray-400 text-sm leading-relaxed font-light">
+                    {t('about.focus')}
+                  </p>
+                </div>
 
                 {/* Stack Tecnológico */}
                 <div className="mb-8">

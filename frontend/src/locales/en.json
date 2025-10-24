@@ -14,14 +14,20 @@
    "about": {
     "title": "ABOUT ME",
     "email": "juan.paredes260320@gmail.com",
-    "description": "Mechatronic Engineer with experience in Full Stack development and technological solutions design for process optimization. Led development of digital tools including a coffee milling control system, digitizing manual processes through web applications integrating client management, production, and operational calculations. Skilled in React, Node.js, Python, SQL, and automation tools like RPA and Microsoft Power Automate.",
+    "description": "Mechatronic Engineer turned Full Stack Developer, blending solid engineering foundation with passion for software development. My transition into web technology has been driven by the pursuit of creating digital solutions that transform industrial and business processes.",
+    "story": "With experience in industrial automation and deep understanding of complex systems, I've channeled these skills toward developing robust and scalable web applications. My mechatronics background allows me to approach programming challenges from a unique perspective, combining systematic thinking with technical creativity.",
+    "achievements": "I've led the development of innovative digital tools, including a comprehensive coffee milling control system that digitized manual processes through integrated web applications. This project demonstrates my ability to transform real-world needs into effective technological solutions.",
+    "focus": "My focus centers on creating exceptional user experiences backed by solid backend architectures, applying engineering principles to ensure performance, scalability, and maintainability in every project.",
     "location": "Popayán, Colombia",
     "photo_alt": "Portrait photo",
     "tech_stack": "Tech Stack",
     "frontend": "Frontend",
     "backend": "Backend",
     "tools": "Tools",
-    "automation": "Automation"
+    "automation": "Automation",
+    "professional_journey": "Professional Journey",
+    "engineering_background": "Engineering Background",
+    "development_passion": "Development Passion"
   },
   "projects": {
     "title": "My Projects",
