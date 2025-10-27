@@ -25,6 +25,19 @@ def show_hello_world():
 @admin_bp.route('/users', methods=['POST'])
 def create_user():
     try:
+       
+        registration_enabled = os.environ.get('ENABLE_USER_REGISTRATION', 'false').lower() == 'true'
+        
+        if not registration_enabled:
+            return jsonify({'error': 'User registration is currently disabled'}), 403
+        
+       
+        admin_key = request.json.get('admin_key') if request.json else None
+        expected_key = os.environ.get('ADMIN_CREATION_KEY')
+        
+        if not admin_key or admin_key != expected_key:
+            return jsonify({'error': 'Invalid admin key required for registration'}), 403
+
         username = request.json.get('username')
         password = request.json.get('password')
 
