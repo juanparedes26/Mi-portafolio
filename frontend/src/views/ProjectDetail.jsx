@@ -180,16 +180,26 @@ useEffect(() => {
                   {/* Imagen principal con navegación */}
                   <div className="relative group">
                     <div 
-                      className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl overflow-hidden shadow-2xl"
+                      className="relative bg-gray-900 rounded-3xl overflow-hidden shadow-2xl flex items-center justify-center"
+                      style={{ 
+                        minHeight: '400px',
+                        maxHeight: '80vh',
+                        aspectRatio: 'auto'
+                      }}
                       onTouchStart={handleTouchStart}
                       onTouchEnd={handleTouchEnd}
                     >
                       <img
                         src={project.images[selectedImageIndex]}
                         alt={`${content.title} - Imagen ${selectedImageIndex + 1}`}
-                        className={`w-full h-96 md:h-[600px] object-cover transition-all duration-300 ${
+                        className={`w-full h-full object-contain transition-all duration-300 ${
                           isTransitioning ? 'scale-105' : 'scale-100'
                         }`}
+                        style={{ 
+                          maxWidth: '100%',
+                          maxHeight: '100%',
+                          objectFit: 'contain'
+                        }}
                         loading="lazy"
                       />
                       
