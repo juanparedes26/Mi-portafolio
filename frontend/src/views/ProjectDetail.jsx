@@ -307,13 +307,45 @@ useEffect(() => {
                       </div>
                     </div>
                   )}
+
+                  {/* Descripción del proyecto */}
+                  <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 shadow-xl border border-gray-700/50 mt-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-bold text-white">{t('project_detail.project_description')}</h3>
+                    </div>
+                    <p className="text-gray-300 leading-relaxed text-base">
+                      {content.description}
+                    </p>
+                  </div>
                 </div>
               ) : (
-                <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl h-96 md:h-[600px] flex items-center justify-center shadow-2xl">
-                  <div className="text-center text-gray-500">
-                    <div className="text-8xl mb-6 opacity-50">🖼️</div>
-                    <p className="text-xl font-medium">{t('project_detail.no_images')}</p>
-                    <p className="text-gray-400 mt-2">{t('project_detail.no_gallery')}</p>
+                <div className="space-y-6">
+                  <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl h-96 md:h-[600px] flex items-center justify-center shadow-2xl">
+                    <div className="text-center text-gray-500">
+                      <div className="text-8xl mb-6 opacity-50">🖼️</div>
+                      <p className="text-xl font-medium">{t('project_detail.no_images')}</p>
+                      <p className="text-gray-400 mt-2">{t('project_detail.no_gallery')}</p>
+                    </div>
+                  </div>
+
+                  {/* Descripción del proyecto - cuando no hay imágenes */}
+                  <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 shadow-xl border border-gray-700/50">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-bold text-white">{t('project_detail.project_description')}</h3>
+                    </div>
+                    <p className="text-gray-300 leading-relaxed text-base">
+                      {content.description}
+                    </p>
                   </div>
                 </div>
               )}
@@ -481,31 +513,14 @@ useEffect(() => {
             </div>
           </div>
 
-          {/* Descripción como card debajo de las fotos */}
-          <div className="mt-12">
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 shadow-xl border border-gray-700/50">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                </div>
-                <h2 className="text-2xl font-bold text-white">{t('project_detail.project_description')}</h2>
-              </div>
-              <p className="text-gray-300 leading-relaxed text-base">
-                {content.description}
-              </p>
-            </div>
-            
-        
-            <div className="flex justify-center mt-8">
-              <button
-                onClick={() => navigate('/projects')}
-                className="px-8 py-3 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                {t('project_detail.back_to_projects')}
-              </button>
-            </div>
+          {/* Botón de navegación */}
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={() => navigate('/projects')}
+              className="px-8 py-3 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition-colors"
+            >
+              {t('project_detail.back_to_projects')}
+            </button>
           </div>
         </div>
       </div>
